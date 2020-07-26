@@ -14,6 +14,14 @@ interface IResponseBetaSeriesApi {
 export interface IPopularShow {
   id: number;
   title: string;
+  description: string;
+  genres: {
+    [key: string]: string;
+  };
+  status: string;
+  images: {
+    poster: string;
+  };
 }
 
 interface IPopularShowsResponseApi extends IResponseBetaSeriesApi {
@@ -31,7 +39,7 @@ export async function fetchPopularShows(limit = 5, start = 0) {
       limit,
       order: 'popularity',
       start,
-      summary: true,
+      summary: false,
     },
   });
 

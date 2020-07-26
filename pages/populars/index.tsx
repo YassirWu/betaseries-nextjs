@@ -1,38 +1,43 @@
 import React from 'react';
 import useSWR from 'swr';
 import { fetchPopularShows, IPopularShow } from '../../services/services';
+import ShowCardItem from '../../components/ShowCardItem';
+import { Container, Grid } from '@material-ui/core';
 
 export default function Populars() {
-  const { data: shows, mutate } = useSWR('/shows/list',() => fetchPopularShows(15), { revalidateOnFocus: false });
+  // TODO change useSWR to useSWRInfinite
+  const { data: shows, mutate } = useSWR(['/shows/list', 10],(url, limit) => fetchPopularShows(limit), { revalidateOnFocus: false });
   const [isLoadingMore, setIsLoadingMore] = React.useState(false);
 
   if (!shows) {
     return <p>loading</p>;
   }
 
-  const onClickFetchMorePopularShow = () => {
+  const onClickFetchMorePopularShow = async () => {
     setIsLoadingMore(true);
-    mutate(async (currentShows) => {
-      const newShows = await fetchPopularShows(15, currentShows.length);
-      setIsLoadingMore(false);
-      return [
-        ...currentShows,
-        ...newShows,
-      ]
-    }, false);
+    const newShows = await fetchPopularShows(10, shows.length);
+    mutate([...shows, ...newShows], false);
+    setIsLoadingMore(false);
   };
 
   return (
-    <div>
-      <ul>
+    <Container>
+      <Grid container spacing={2}>
         {shows.map(show => (
-          <li key={show.id}>{show.title}</li>
+          <Grid key={show.id} item xs={12} sm={6}>
+            <ShowCardItem
+              key={show.id}
+              title={show.title}
+              description={show.description}
+              imageUrl={show.images.poster}
+            />
+          </Grid>
         ))}
-      </ul>
+      </Grid>
       <button
         onClick={onClickFetchMorePopularShow}
         disabled={isLoadingMore}
       >Load more popular shows</button>
-    </div>
+    </Container>
   );
 };

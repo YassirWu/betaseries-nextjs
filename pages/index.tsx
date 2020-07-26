@@ -1,8 +1,8 @@
 import React from 'react';
-import Head from 'next/head'
-import Link from 'next/link'
 import { fetchPopularShows, IPopularShow } from '../services/services'
 import { GetStaticProps } from 'next';
+import { Typography } from '@material-ui/core';
+import LinkNavigation from '../components/LinkNavigation';
 
 interface IHomeProps {
   populars: IPopularShow[];
@@ -21,22 +21,15 @@ export const getStaticProps: GetStaticProps<IHomeProps> = async () => {
 const Home: React.FunctionComponent<IHomeProps> = ({ populars }) => {
   return (
     <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Typography variant="h1">BetaSeries NextJs App</Typography>
 
-      <main>
-        <h1>Welcome to BetaSeries NextJs Web Application</h1>
-      </main>
-
-      <h2>Popular Series</h2>
+      <Typography variant="h2">Popular Shows</Typography>
       <ul>
         {populars.map(show => (
           <li key={show.id}>{show.title}</li>
-        ))}
+          ))}
       </ul>
-      <Link href="populars">Show all popular shows</Link>
+      <LinkNavigation to="populars" text="See all popular shows" />
     </div>
   )
 }
