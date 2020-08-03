@@ -1,42 +1,49 @@
 import React from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRInfinite } from 'swr';
 import { fetchPopularShows, IPopularShow } from '../../services/services';
 import ShowCardItem from '../../components/ShowCardItem';
 import { Container, Grid } from '@material-ui/core';
 
-export default function Populars() {
-  // TODO change useSWR to useSWRInfinite
-  const { data: shows, mutate } = useSWR(['/shows/list', 10],(url, limit) => fetchPopularShows(limit), { revalidateOnFocus: false });
-  const [isLoadingMore, setIsLoadingMore] = React.useState(false);
-
-  if (!shows) {
-    return <p>loading</p>;
+const getKey = (pageIndex: number, previousPageData?: IPopularShow[]) => {
+  if (!previousPageData) {
+    return ['/shows/list', 10];
   }
+  if (previousPageData.length < 10) {
+    return null;
+  }
+  const start = pageIndex * 10
+  return ['/shows/list', 10, start];
+}
 
-  const onClickFetchMorePopularShow = async () => {
-    setIsLoadingMore(true);
-    const newShows = await fetchPopularShows(10, shows.length);
-    mutate([...shows, ...newShows], false);
-    setIsLoadingMore(false);
-  };
+export default function Populars() {
+  const { data, error, size, setSize, isValidating } = useSWRInfinite<IPopularShow[]>(getKey, (url, limit, start) => fetchPopularShows(limit, start), { revalidateOnFocus: false });
+
+  if (error) return <p>error</p>;
+  if (!data) return <p>loading</p>;
 
   return (
     <Container>
       <Grid container spacing={2}>
-        {shows.map(show => (
-          <Grid key={show.id} item xs={12} sm={6}>
-            <ShowCardItem
-              key={show.id}
-              title={show.title}
-              description={show.description}
-              imageUrl={show.images.poster}
-            />
-          </Grid>
-        ))}
+        {data.map(shows => {
+          return (
+            <>
+              {shows.map(show => (
+                <Grid key={show.id} item xs={12} sm={6}>
+                  <ShowCardItem
+                    key={show.id}
+                    title={show.title}
+                    description={show.description}
+                    imageUrl={show.images.poster}
+                  />
+                </Grid>
+              ))}
+            </>
+          )
+        })}
       </Grid>
       <button
-        onClick={onClickFetchMorePopularShow}
-        disabled={isLoadingMore}
+        onClick={() => setSize(size + 1)}
+        disabled={isValidating}
       >Load more popular shows</button>
     </Container>
   );
