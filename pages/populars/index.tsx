@@ -1,8 +1,16 @@
 import React from 'react';
-import useSWR, { useSWRInfinite } from 'swr';
+import { useSWRInfinite } from 'swr';
 import { fetchPopularShows, IPopularShow } from '../../services/services';
 import ShowCardItem from '../../components/ShowCardItem';
-import { Container, Grid } from '@material-ui/core';
+import { Grid, Button, Segment, Header } from 'semantic-ui-react';
+import { makeStyles } from '@material-ui/styles';
+import LinkNavigation from '../../components/LinkNavigation';
+
+const useStyle = makeStyles({
+  item: {
+    marginBottom: '20px !important',
+  },
+});
 
 const getKey = (pageIndex: number, previousPageData?: IPopularShow[]) => {
   if (!previousPageData) {
@@ -16,35 +24,47 @@ const getKey = (pageIndex: number, previousPageData?: IPopularShow[]) => {
 }
 
 export default function Populars() {
+  const classes = useStyle();
   const { data, error, size, setSize, isValidating } = useSWRInfinite<IPopularShow[]>(getKey, (url, limit, start) => fetchPopularShows(limit, start), { revalidateOnFocus: false });
 
   if (error) return <p>error</p>;
   if (!data) return <p>loading</p>;
 
   return (
-    <Container>
-      <Grid container spacing={2}>
-        {data.map(shows => {
-          return (
-            <>
-              {shows.map(show => (
-                <Grid key={show.id} item xs={12} sm={6}>
-                  <ShowCardItem
-                    key={show.id}
-                    title={show.title}
-                    description={show.description}
-                    imageUrl={show.images.poster}
-                  />
-                </Grid>
-              ))}
-            </>
-          )
-        })}
+    <>
+      <LinkNavigation to="/" text="Back" icon="reply" />
+    
+      <Segment basic>
+        <Header as="h1">
+          <Header.Content>Popular shows</Header.Content>
+        </Header>
+      </Segment>
+      
+      <Grid columns={2} doubling>
+        <Grid.Row>
+          {data.map(shows => {
+            return (
+              <>
+                {shows.map(show => (
+                  <Grid.Column key={show.id} className={classes.item}>
+                    <ShowCardItem
+                      key={show.id}
+                      title={show.title}
+                      description={show.description}
+                      imageUrl={show.images.poster}
+                    />
+                  </Grid.Column>
+                ))}
+              </>
+            )
+          })}
+        </Grid.Row>
       </Grid>
-      <button
-        onClick={() => setSize(size + 1)}
-        disabled={isValidating}
-      >Load more popular shows</button>
-    </Container>
+      <Segment basic textAlign="center" loading={isValidating}>
+        <Button
+          onClick={() => setSize(size + 1)}
+        >Load more popular shows</Button>
+      </Segment>
+    </>
   );
 };

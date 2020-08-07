@@ -1,25 +1,22 @@
 import React from 'react';
-import LinkNext from 'next/link';
-import { Typography, Link } from '@material-ui/core';
+import Link from 'next/link';
+import { Header, Icon, SemanticICONS } from 'semantic-ui-react';
 
-function CustomLink({ href, children }) {
-  return (
-    <LinkNext href={href}>
-      <a>{children}</a>
-    </LinkNext>
-  )
-}
 
 interface ILinkNavigationProps {
   to: string;
   text: string;
+  icon?: SemanticICONS;
 }
 
-const LinkNavigation: React.FunctionComponent<ILinkNavigationProps> = ({ to, text }) => {
+const LinkNavigation: React.FunctionComponent<ILinkNavigationProps> = ({ to, text, icon }) => {
   return (
-    <Typography>
-      <Link component={CustomLink} href={to}>{text}</Link>
-    </Typography>
+    <Header as={Link} href={to}>
+      <a>
+        {icon && <Icon name={icon} />}
+        {text}
+      </a>
+    </Header>
   );
 };
 

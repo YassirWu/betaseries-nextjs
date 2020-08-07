@@ -32,7 +32,7 @@ const client = axios.create({
   baseURL: BETASERIES_API_BASEURL,
 })
 
-export async function fetchPopularShows(limit = 5, start = 0) {
+export async function fetchPopularShows(limit = 20, start = 0) {
   const response = await client.get<IResponseBetaSeriesApi>('/shows/list', {
     params: {
       key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
