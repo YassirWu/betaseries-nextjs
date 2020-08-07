@@ -1,16 +1,11 @@
 import React from 'react';
-import { makeStyles, Paper, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Grid, Segment } from 'semantic-ui-react';
 
 const useStyles = makeStyles({
-  root: {
-    padding: '10px',
-  },
   image: {
     maxWidth: '100%',
   },
-  descriptionBloc: {
-    padding: '0 10px',
-  }
 });
 
 interface IShowCardItemProps {
@@ -23,17 +18,19 @@ const ShowCardItem: React.FunctionComponent<IShowCardItemProps> = ({ title, desc
   const classes = useStyles();
 
   return (
-    <Paper className={classes.root}>
-      <Grid container>
-        <Grid item xs={4}>
-          <img src={imageUrl} alt={title} className={classes.image} />
-        </Grid>
-        <Grid item xs={8} className={classes.descriptionBloc}>
-          <h3>{title}</h3>
-          <p>{description}</p>
-        </Grid>
+    <Segment>
+      <Grid columns={2}>
+        <Grid.Row>
+          <Grid.Column width={6}>
+            <img src={imageUrl} alt={title} className={classes.image} />
+          </Grid.Column>
+          <Grid.Column width={10}>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
-    </Paper>
+    </Segment>
   );
 };
 
