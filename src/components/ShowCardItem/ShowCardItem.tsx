@@ -3,14 +3,13 @@ import { Grid, Segment, Image, Header } from 'semantic-ui-react';
 import LinkNavigation from '../LinkNavigation';
 
 interface IShowCardItemProps {
-  id: number,
+  id: number;
   title: string;
   description: string;
   imageUrl: string;
 }
 
 const ShowCardItem: React.FunctionComponent<IShowCardItemProps> = ({ id, title, description, imageUrl }) => {
-
   return (
     <Segment>
       <Grid columns={2}>

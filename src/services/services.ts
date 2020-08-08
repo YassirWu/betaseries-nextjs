@@ -22,7 +22,7 @@ export type Show = {
   images: {
     poster: string;
   };
-}
+};
 
 export type IPopularShow = Show;
 
@@ -37,9 +37,9 @@ interface IDetailShowResponseApi extends IResponseBetaSeriesApi {
 
 const client = axios.create({
   baseURL: BETASERIES_API_BASEURL,
-})
+});
 
-export async function fetchPopularShows(limit = 20, start = 0) {
+export async function fetchPopularShows(limit = 20, start = 0): Promise<Show[]> {
   const response = await client.get<IPopularShowsResponseApi>('/shows/list', {
     params: {
       key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
@@ -53,7 +53,7 @@ export async function fetchPopularShows(limit = 20, start = 0) {
   return response.data.shows;
 }
 
-export async function fetchDetailShow(id: number | string) {
+export async function fetchDetailShow(id: number | string): Promise<Show> {
   const response = await client.get<IDetailShowResponseApi>('/shows/display', {
     params: {
       key: process.env.NEXT_PUBLIC_BETASERIES_KEY,

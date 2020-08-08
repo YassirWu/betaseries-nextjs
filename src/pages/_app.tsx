@@ -1,19 +1,21 @@
+import React from 'react';
 import Head from 'next/head';
 import { Container } from 'semantic-ui-react';
 import 'normalize.css';
 import 'semantic-ui-css/semantic.min.css';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import '../components/Slick/slick.css';
 import { makeStyles } from '@material-ui/styles';
+import { AppPropsType } from 'next/dist/next-server/lib/utils';
 
 const useStyle = makeStyles({
   root: {
     padding: '20px 10px',
-  }
-})
+  },
+});
 
-function MyApp({ Component, pageProps }) {
+const MyApp: React.FunctionComponent<AppPropsType> = ({ Component, pageProps }: AppPropsType) => {
   const classes = useStyle();
 
   return (
@@ -26,7 +28,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </div>
     </Container>
-  )
-}
+  );
+};
 
 export default MyApp;

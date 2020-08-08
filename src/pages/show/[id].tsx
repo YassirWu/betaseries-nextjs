@@ -1,12 +1,12 @@
 import React from 'react';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { fetchDetailShow, fetchPopularShows, Show } from '../../services/services';
+import { fetchDetailShow, fetchPopularShows, Show } from 'services/services';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const popularShows = await fetchPopularShows(50);
-  const paths = popularShows.map(show => ({
+  const paths = popularShows.map((show) => ({
     params: {
       id: show.id.toString(),
     },
@@ -19,27 +19,34 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 type GetStaticPropsReturn = {
-  initialData: Show;
-}
+  initialData?: Show;
+};
 type GetStaticPropsParams = {
   id: string;
-}
+};
 export const getStaticProps: GetStaticProps<GetStaticPropsReturn, GetStaticPropsParams> = async ({ params }) => {
-  console.log('getStaticProps', params.id)
+  if (!params) {
+    return { props: {} };
+  }
+
   const show = await fetchDetailShow(params.id);
 
   return {
     props: {
       initialData: show,
-    }
-  }
-}
+    },
+  };
+};
 
-export default function DetailShow({ initialData }) {
+type DetailShowProps = {
+  initialData?: Show;
+};
+
+const DetailShow: React.FunctionComponent<DetailShowProps> = ({ initialData }) => {
   const router = useRouter();
   const { id } = router.query;
   const { data: show, error } = useSWR(['/shows/display', id], (url, id) => fetchDetailShow(id), { initialData });
-  
+
   if (error) return <p>error</p>;
   if (!show) return <p>loading</p>;
 
@@ -47,5 +54,7 @@ export default function DetailShow({ initialData }) {
     <>
       <h1>{show.title}</h1>
     </>
-  )
-}
+  );
+};
+
+export default DetailShow;

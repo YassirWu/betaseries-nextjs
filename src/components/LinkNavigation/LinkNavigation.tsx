@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { Header, Icon, SemanticICONS } from 'semantic-ui-react';
 
-
 interface ILinkNavigationProps {
   to: string;
   as?: string;
