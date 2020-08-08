@@ -2,7 +2,7 @@ import React from 'react';
 import { useSWRInfinite } from 'swr';
 import { fetchPopularShows, IPopularShow } from '../../services/services';
 import ShowCardItem from '../../components/ShowCardItem';
-import { Grid, Button, Segment, Header } from 'semantic-ui-react';
+import { Grid, Segment, Header, Visibility } from 'semantic-ui-react';
 import { makeStyles } from '@material-ui/styles';
 import LinkNavigation from '../../components/LinkNavigation';
 
@@ -10,6 +10,9 @@ const useStyle = makeStyles({
   item: {
     marginBottom: '20px !important',
   },
+  loaderInfinite: {
+    height: '100px'
+  }
 });
 
 const getKey = (pageIndex: number, previousPageData?: IPopularShow[]) => {
@@ -40,31 +43,33 @@ export default function Populars() {
         </Header>
       </Segment>
       
-      <Grid columns={2} doubling>
-        <Grid.Row>
-          {data.map(shows => {
-            return (
-              <>
-                {shows.map(show => (
-                  <Grid.Column key={show.id} className={classes.item}>
-                    <ShowCardItem
-                      key={show.id}
-                      title={show.title}
-                      description={show.description}
-                      imageUrl={show.images.poster}
-                    />
-                  </Grid.Column>
-                ))}
-              </>
-            )
-          })}
-        </Grid.Row>
-      </Grid>
-      <Segment basic textAlign="center" loading={isValidating}>
-        <Button
-          onClick={() => setSize(size + 1)}
-        >Load more popular shows</Button>
-      </Segment>
+      <Visibility
+        onBottomVisible={() => setSize(size + 1)}
+        once={false}
+      >
+        <Grid columns={2} doubling>
+          <Grid.Row>
+            {data.map(shows => {
+              return (
+                <>
+                  {shows.map(show => (
+                    <Grid.Column key={show.id} className={classes.item}>
+                      <ShowCardItem
+                        key={show.id}
+                        id={show.id}
+                        title={show.title}
+                        description={show.description}
+                        imageUrl={show.images.poster}
+                      />
+                    </Grid.Column>
+                  ))}
+                </>
+              )
+            })}
+          </Grid.Row>
+        </Grid>
+      </Visibility>
+      <Segment basic textAlign="center" loading={isValidating} className={classes.loaderInfinite} />
     </>
   );
 };

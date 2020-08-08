@@ -11,7 +11,7 @@ interface IResponseBetaSeriesApi {
   errors: IErrorResponseBetaSeriesApi[];
 }
 
-export interface IPopularShow {
+export type Show = {
   id: number;
   title: string;
   description: string;
@@ -24,8 +24,15 @@ export interface IPopularShow {
   };
 }
 
+export type IPopularShow = Show;
+
+export type IDetailShow = Show;
+
 interface IPopularShowsResponseApi extends IResponseBetaSeriesApi {
   shows: IPopularShow[];
+}
+interface IDetailShowResponseApi extends IResponseBetaSeriesApi {
+  show: IDetailShow;
 }
 
 const client = axios.create({
@@ -33,7 +40,7 @@ const client = axios.create({
 })
 
 export async function fetchPopularShows(limit = 20, start = 0) {
-  const response = await client.get<IResponseBetaSeriesApi>('/shows/list', {
+  const response = await client.get<IPopularShowsResponseApi>('/shows/list', {
     params: {
       key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
       limit,
@@ -43,7 +50,16 @@ export async function fetchPopularShows(limit = 20, start = 0) {
     },
   });
 
-  const { shows } = response.data as IPopularShowsResponseApi;
+  return response.data.shows;
+}
 
-  return shows;
+export async function fetchDetailShow(id: number | string) {
+  const response = await client.get<IDetailShowResponseApi>('/shows/display', {
+    params: {
+      key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
+      id,
+    },
+  });
+
+  return response.data.show;
 }

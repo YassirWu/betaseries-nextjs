@@ -1,31 +1,27 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { Grid, Segment } from 'semantic-ui-react';
-
-const useStyles = makeStyles({
-  image: {
-    maxWidth: '100%',
-  },
-});
+import { Grid, Segment, Image, Header } from 'semantic-ui-react';
+import LinkNavigation from '../LinkNavigation';
 
 interface IShowCardItemProps {
+  id: number,
   title: string;
   description: string;
   imageUrl: string;
 }
 
-const ShowCardItem: React.FunctionComponent<IShowCardItemProps> = ({ title, description, imageUrl }) => {
-  const classes = useStyles();
+const ShowCardItem: React.FunctionComponent<IShowCardItemProps> = ({ id, title, description, imageUrl }) => {
 
   return (
     <Segment>
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column width={6}>
-            <img src={imageUrl} alt={title} className={classes.image} />
+            <Image src={imageUrl} />
           </Grid.Column>
           <Grid.Column width={10}>
-            <h3>{title}</h3>
+            <Header as="h3">
+              <LinkNavigation to="/show/[id]" as={`/show/${id}`} text={title} />
+            </Header>
             <p>{description}</p>
           </Grid.Column>
         </Grid.Row>
