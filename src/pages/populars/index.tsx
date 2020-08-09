@@ -1,10 +1,15 @@
 import React from 'react';
 import { useSWRInfinite } from 'swr';
-import { Grid, Segment, Header, Visibility } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { makeStyles } from '@material-ui/styles';
-import LinkNavigation from 'components/LinkNavigation';
 import { fetchPopularShows, IPopularShow } from 'services/services';
-import ShowCardItem from 'components/ShowCardItem';
+import ShowCardItem from 'components/molecules/ShowCardItem';
+import Bloc from 'components/atoms/Bloc';
+import Header, { HeaderContent } from 'components/atoms/Header';
+import Visibility from 'components/atoms/Visibility';
+import { useRouter } from 'next/router';
+import Link from 'components/atoms/Link';
+import Icon from 'components/atoms/Icon';
 
 const useStyle = makeStyles({
   item: {
@@ -27,6 +32,7 @@ const getKey = (pageIndex: number, previousPageData: IPopularShow[] | null) => {
 };
 
 const Populars: React.FunctionComponent = () => {
+  const router = useRouter();
   const classes = useStyle();
   const { data, error, size, setSize, isValidating } = useSWRInfinite<IPopularShow[]>(
     getKey,
@@ -45,13 +51,16 @@ const Populars: React.FunctionComponent = () => {
 
   return (
     <>
-      <LinkNavigation to="/" text="Back" icon="reply" />
+      <Link href="/" onClick={() => router.push('/')}>
+        <Icon name="reply" />
+        Back
+      </Link>
 
-      <Segment basic>
+      <Bloc basic>
         <Header as="h1">
-          <Header.Content>Popular shows</Header.Content>
+          <HeaderContent>Popular shows</HeaderContent>
         </Header>
-      </Segment>
+      </Bloc>
 
       <Visibility onBottomVisible={onBottomVisible} once={false}>
         <Grid columns={2} doubling>
@@ -76,7 +85,7 @@ const Populars: React.FunctionComponent = () => {
           </Grid.Row>
         </Grid>
       </Visibility>
-      <Segment basic textAlign="center" loading={isValidating} className={classes.loaderInfinite} />
+      <Bloc basic textAlign="center" loading={isValidating} className={classes.loaderInfinite} />
     </>
   );
 };

@@ -3,8 +3,12 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { fetchDetailShow, fetchPopularShows, Show } from 'services/services';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { Header, Segment, Grid, Image, List } from 'semantic-ui-react';
-import LinkNavigation from 'components/LinkNavigation';
+import { Grid, List } from 'semantic-ui-react';
+import Header, { HeaderContent } from 'components/atoms/Header';
+import Image from 'components/atoms/Image';
+import Bloc from 'components/atoms/Bloc';
+import Link from 'components/atoms/Link';
+import Icon from 'components/atoms/Icon';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const popularShows = await fetchPopularShows(50);
@@ -54,9 +58,15 @@ const DetailShow: React.FunctionComponent<DetailShowProps> = ({ initialData }) =
 
   return (
     <>
-      <LinkNavigation to="/" text="Back" icon="reply" />
-      <Segment basic>
-        <Grid columns="2" divided>
+      <Link href="/" onClick={() => router.push('/')}>
+        <Icon name="reply" />
+        Back
+      </Link>
+      <Bloc basic>
+        <Grid stackable columns="2" divided reversed="computer tablet">
+          <Grid.Column width="6">
+            <Image src={show.images.poster} />
+          </Grid.Column>
           <Grid.Column width="10">
             <Header as="h1">{show.title}</Header>
             <p>{show.description}</p>
@@ -64,7 +74,7 @@ const DetailShow: React.FunctionComponent<DetailShowProps> = ({ initialData }) =
             {show.platforms.svods && (
               <>
                 <Header as="h3">
-                  <Header.Content>Platforms:</Header.Content>
+                  <HeaderContent>Platforms:</HeaderContent>
                 </Header>
                 <List horizontal>
                   {show.platforms.svods.map((platform) => (
@@ -85,11 +95,8 @@ const DetailShow: React.FunctionComponent<DetailShowProps> = ({ initialData }) =
               </List>
             </>
           </Grid.Column>
-          <Grid.Column width="6">
-            <Image src={show.images.poster} />
-          </Grid.Column>
         </Grid>
-      </Segment>
+      </Bloc>
     </>
   );
 };

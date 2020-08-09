@@ -1,9 +1,12 @@
 import React from 'react';
-import { fetchPopularShows, IPopularShow } from '../services/services';
 import { GetStaticProps } from 'next';
-import LinkNavigation from '../components/LinkNavigation';
-import { Header, Image, Segment } from 'semantic-ui-react';
-import Slick from 'components/Slick';
+import { useRouter } from 'next/router';
+import Slick from 'components/atoms/Slick';
+import Image from 'components/atoms/Image';
+import Header, { HeaderContent, HeaderSubheader } from 'components/atoms/Header';
+import Bloc from 'components/atoms/Bloc';
+import Link from 'components/atoms/Link';
+import { fetchPopularShows, IPopularShow } from '../services/services';
 
 interface IHomeProps {
   populars: IPopularShow[];
@@ -20,23 +23,27 @@ export const getStaticProps: GetStaticProps<IHomeProps> = async () => {
 };
 
 const Home: React.FunctionComponent<IHomeProps> = ({ populars }) => {
+  const router = useRouter();
+
   return (
     <div>
-      <Segment>
+      <Bloc>
         <Header>
           <Image src="/images/logo.png" />
-          <Header.Content>
+          <HeaderContent>
             BetaSeries NextJs App
-            <Header.Subheader>Simple website using BetaSeries api, NextJs, SWR and Semantic UI</Header.Subheader>
-          </Header.Content>
+            <HeaderSubheader>Simple website using BetaSeries api, NextJs, SWR and Semantic UI</HeaderSubheader>
+          </HeaderContent>
         </Header>
-      </Segment>
+      </Bloc>
 
       <Header as="h2" dividing>
-        <Header.Content>Popular Shows</Header.Content>
-        <Header.Subheader>
-          <LinkNavigation to="populars" text="See all popular shows" />
-        </Header.Subheader>
+        <HeaderContent>Popular Shows</HeaderContent>
+        <HeaderSubheader>
+          <Link href="/populars" onClick={() => router.push('/populars')}>
+            See all popular shows
+          </Link>
+        </HeaderSubheader>
       </Header>
       <Slick>
         {populars.map((show) => (
