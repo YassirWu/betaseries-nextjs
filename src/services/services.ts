@@ -11,6 +11,13 @@ interface IResponseBetaSeriesApi {
   errors: IErrorResponseBetaSeriesApi[];
 }
 
+export type Platform = {
+  id: string;
+  link_url: string;
+  logo: string;
+  name: string;
+};
+
 export type Show = {
   id: number;
   title: string;
@@ -21,6 +28,9 @@ export type Show = {
   status: string;
   images: {
     poster: string;
+  };
+  platforms: {
+    svods?: Platform[];
   };
 };
 
