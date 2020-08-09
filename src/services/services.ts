@@ -18,20 +18,24 @@ export type Platform = {
   name: string;
 };
 
+export type PlatformByCategory = {
+  svods?: Platform[];
+};
+
+export type Genres = {
+  [key: string]: string;
+};
+
 export type Show = {
   id: number;
   title: string;
   description: string;
-  genres: {
-    [key: string]: string;
-  };
+  genres: Genres;
   status: string;
   images: {
     poster: string;
   };
-  platforms: {
-    svods?: Platform[];
-  };
+  platforms: PlatformByCategory;
 };
 
 export type IPopularShow = Show;

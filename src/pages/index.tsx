@@ -1,12 +1,9 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import Slick from 'components/molecules/Slick';
-import Image from 'components/atoms/Image';
-import Header, { HeaderContent, HeaderSubheader } from 'components/atoms/Header';
-import Bloc from 'components/atoms/Bloc';
-import Link from 'components/atoms/Link';
-import { fetchPopularShows, IPopularShow } from '../services/services';
+import { fetchPopularShows, IPopularShow } from 'services/services';
+import ApplicationHeader from 'components/molecules/ApplicationHeader';
+import ShowsSlider from 'components/organisms/ShowsSlider';
 
 interface IHomeProps {
   populars: IPopularShow[];
@@ -26,33 +23,18 @@ const Home: React.FunctionComponent<IHomeProps> = ({ populars }) => {
   const router = useRouter();
 
   return (
-    <div>
-      <Bloc>
-        <Header>
-          <Image src="/images/logo.png" />
-          <HeaderContent>
-            BetaSeries NextJs App
-            <HeaderSubheader>Simple website using BetaSeries api, NextJs, SWR and Semantic UI</HeaderSubheader>
-          </HeaderContent>
-        </Header>
-      </Bloc>
+    <>
+      <ApplicationHeader />
 
-      <Header as="h2" dividing>
-        <HeaderContent>Popular Shows</HeaderContent>
-        <HeaderSubheader>
-          <Link href="/populars" onClick={() => router.push('/populars')}>
-            See all popular shows
-          </Link>
-        </HeaderSubheader>
-      </Header>
-      <Slick>
-        {populars.map((show) => (
-          <div key={show.id}>
-            <Image src={show.images.poster} />
-          </div>
-        ))}
-      </Slick>
-    </div>
+      <ShowsSlider
+        title="Popular Shows"
+        subtitle="See all popular shows"
+        link="/populars"
+        shows={populars}
+        onClickAllShows={() => router.push('/populars')}
+        onClickShow={(id) => router.push('/show/[id]', `/show/${id}`)}
+      />
+    </>
   );
 };
 
