@@ -1,11 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import { Container } from 'semantic-ui-react';
-import 'normalize.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import '../components/atoms/Slick/slick.css';
 import { makeStyles } from '@material-ui/styles';
 import { AppPropsType } from 'next/dist/next-server/lib/utils';
 

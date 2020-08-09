@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import Slick from 'components/atoms/Slick';
+import Slick from 'components/molecules/Slick';
 import Image from 'components/atoms/Image';
 import Header, { HeaderContent, HeaderSubheader } from 'components/atoms/Header';
 import Bloc from 'components/atoms/Bloc';
