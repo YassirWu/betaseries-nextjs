@@ -39,6 +39,7 @@ const ShowsSlider: React.FunctionComponent<ShowsSliderProps> = ({
               src={show.images.poster}
               as="a"
               href={`/show/${show.id}`}
+              alt={show.title}
               onClick={(e) => {
                 e.preventDefault();
                 onClickShow(show.id);

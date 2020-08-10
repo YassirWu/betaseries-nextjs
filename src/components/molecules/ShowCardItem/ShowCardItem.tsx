@@ -12,13 +12,18 @@ interface IShowCardItemProps {
   imageUrl: string;
 }
 
-const ShowCardItem: React.FunctionComponent<IShowCardItemProps> = ({ id, title, description, imageUrl }) => {
+const ShowCardItem: React.FunctionComponent<IShowCardItemProps> = ({
+  id,
+  title,
+  description,
+  imageUrl,
+}) => {
   const router = useRouter();
   return (
     <Segment>
       <Grid columns={2}>
         <Grid.Column width={6}>
-          <Image src={imageUrl} />
+          <Image src={imageUrl} alt={title} />
         </Grid.Column>
         <Grid.Column width={10}>
           <Header as="h2">
