@@ -35,7 +35,7 @@ export type Show = {
   images: {
     poster: string;
   };
-  platforms: PlatformByCategory;
+  platforms?: PlatformByCategory;
 };
 
 export type IPopularShow = Show;
@@ -47,6 +47,9 @@ interface IPopularShowsResponseApi extends IResponseBetaSeriesApi {
 }
 interface IDetailShowResponseApi extends IResponseBetaSeriesApi {
   show: IDetailShow;
+}
+interface ISearchShowsResponseApi extends IResponseBetaSeriesApi {
+  shows: Show[];
 }
 
 const client = axios.create({
@@ -76,4 +79,16 @@ export async function fetchDetailShow(id: number | string): Promise<Show> {
   });
 
   return response.data.show;
+}
+
+export async function searchShows(query: string): Promise<Show[]> {
+  const response = await client.get<ISearchShowsResponseApi>('/search/all', {
+    params: {
+      key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
+      query,
+      limit: 10,
+    },
+  });
+
+  return response.data.shows;
 }

@@ -16,12 +16,12 @@ const DetailShow: React.FunctionComponent<DetailShowProps> = ({ show }) => {
     <Bloc basic>
       <Grid stackable columns="2" divided reversed="computer tablet">
         <Grid.Column width="6">
-          <Image src={show.images.poster} />
+          <Image src={show.images.poster} alt={show.title} />
         </Grid.Column>
         <Grid.Column width="10">
           <Header as="h1">{show.title}</Header>
           <p>{show.description}</p>
-          <ShowPlatforms platforms={show.platforms} />
+          {show.platforms && <ShowPlatforms platforms={show.platforms} />}
           <ShowGenres genres={show.genres} />
         </Grid.Column>
       </Grid>

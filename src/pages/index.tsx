@@ -24,7 +24,7 @@ const Home: React.FunctionComponent<IHomeProps> = ({ populars }) => {
 
   return (
     <>
-      <ApplicationHeader />
+      <ApplicationHeader onResultSelect={(id) => router.push('/show/[id]', `/show/${id}`)} />
 
       <ShowsSlider
         title="Popular Shows"
