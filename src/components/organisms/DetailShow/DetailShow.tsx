@@ -5,10 +5,10 @@ import { Grid } from 'semantic-ui-react';
 import Header from 'components/atoms/Header';
 import ShowPlatforms from 'components/molecules/ShowPlatforms';
 import ShowGenres from 'components/molecules/ShowGenres';
-import { Show } from 'services/services';
+import { DetailShow as DetailShowType } from 'models/Show';
 
 type DetailShowProps = {
-  show: Show;
+  show: DetailShowType;
 };
 
 const DetailShow: React.FunctionComponent<DetailShowProps> = ({ show }) => {

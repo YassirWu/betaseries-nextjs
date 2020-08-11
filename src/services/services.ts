@@ -1,94 +1,24 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
-const BETASERIES_API_BASEURL = 'https://api.betaseries.com';
+export class ApiManager {
+  protected client: AxiosInstance;
+  protected keyApi: string;
 
-interface IErrorResponseBetaSeriesApi {
-  code: number;
-  text: string;
-}
+  constructor(baseUrl: string, keyApi: string) {
+    this.client = axios.create({
+      baseURL: baseUrl,
+    });
+    this.keyApi = keyApi as string;
+  }
 
-interface IResponseBetaSeriesApi {
-  errors: IErrorResponseBetaSeriesApi[];
-}
+  protected async get<T, P>(url: string, params: P): Promise<T> {
+    const response = await this.client.get<T>(url, {
+      params: {
+        key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
+        ...params,
+      },
+    });
 
-export type Platform = {
-  id: string;
-  link_url: string;
-  logo: string;
-  name: string;
-};
-
-export type PlatformByCategory = {
-  svods?: Platform[];
-};
-
-export type Genres = {
-  [key: string]: string;
-};
-
-export type Show = {
-  id: number;
-  title: string;
-  description: string;
-  genres: Genres;
-  status: string;
-  images: {
-    poster: string;
-  };
-  platforms?: PlatformByCategory;
-};
-
-export type IPopularShow = Show;
-
-export type IDetailShow = Show;
-
-interface IPopularShowsResponseApi extends IResponseBetaSeriesApi {
-  shows: IPopularShow[];
-}
-interface IDetailShowResponseApi extends IResponseBetaSeriesApi {
-  show: IDetailShow;
-}
-interface ISearchShowsResponseApi extends IResponseBetaSeriesApi {
-  shows: Show[];
-}
-
-const client = axios.create({
-  baseURL: BETASERIES_API_BASEURL,
-});
-
-export async function fetchPopularShows(limit = 20, start = 0): Promise<Show[]> {
-  const response = await client.get<IPopularShowsResponseApi>('/shows/list', {
-    params: {
-      key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
-      limit,
-      order: 'popularity',
-      start,
-      summary: false,
-    },
-  });
-
-  return response.data.shows;
-}
-
-export async function fetchDetailShow(id: number | string): Promise<Show> {
-  const response = await client.get<IDetailShowResponseApi>('/shows/display', {
-    params: {
-      key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
-      id,
-    },
-  });
-
-  return response.data.show;
-}
-
-export async function searchShows(query: string): Promise<Show[]> {
-  const response = await client.get<ISearchShowsResponseApi>('/search/all', {
-    params: {
-      key: process.env.NEXT_PUBLIC_BETASERIES_KEY,
-      query,
-      limit: 10,
-    },
-  });
-
-  return response.data.shows;
+    return response.data;
+  }
 }

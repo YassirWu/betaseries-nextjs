@@ -1,10 +1,10 @@
 import React from 'react';
-import Visibility from 'semantic-ui-react/dist/commonjs/behaviors/Visibility';
+import Visibility from 'components/atoms/Visibility';
 import { Grid } from 'semantic-ui-react';
-import { Show } from 'services/services';
 import ShowCardItem from 'components/molecules/ShowCardItem';
 import Bloc from 'components/atoms/Bloc';
 import { makeStyles } from '@material-ui/styles';
+import Show from 'models/Show';
 
 const useStyle = makeStyles({
   item: {
