@@ -2,14 +2,15 @@ import React from 'react';
 import { Search } from 'semantic-ui-react';
 import debounce from 'lodash.debounce';
 import useSWR from 'swr';
-import { searchShows, Show } from 'services/services';
+import { betaSeriesServices } from 'services/betaSeriesClient';
+import { ResultShow } from 'models/Show';
 
 type SearchResultData = {
   title: string;
-  data: Show;
+  data: ResultShow;
 };
 
-function mapShowsToSearchResultData(shows?: Show[]): SearchResultData[] {
+function mapShowsToSearchResultData(shows?: ResultShow[]): SearchResultData[] {
   if (!shows) {
     return [];
   }
@@ -29,7 +30,7 @@ const SearchShows: React.FunctionComponent<SearchShowsProps> = ({ onResultSelect
   const [valueSearch, setValueSearch] = React.useState<string | undefined>(undefined);
   const { data: shows, error } = useSWR(
     valueSearch ? ['/search/all', valueSearch] : null,
-    (url, value) => searchShows(value)
+    (url, value) => betaSeriesServices.searchShows(value)
   );
 
   return (

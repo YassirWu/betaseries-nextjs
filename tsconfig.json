@@ -15,6 +15,9 @@
     "jsx": "preserve",
     "alwaysStrict": true,
     "baseUrl": "src",
+    "paths": {
+      "src/*": ["src/*"]
+    },
     "strictNullChecks": true
   },
   "exclude": ["node_modules"],

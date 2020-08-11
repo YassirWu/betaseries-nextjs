@@ -1,7 +1,7 @@
 import React from 'react';
-import { Genres } from 'services/services';
 import Header from 'components/atoms/Header';
 import { List } from 'semantic-ui-react';
+import { Genres } from 'models/Show';
 
 type ShowGenresProps = {
   genres: Genres;

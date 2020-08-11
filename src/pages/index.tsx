@@ -1,16 +1,17 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { fetchPopularShows, IPopularShow } from 'services/services';
 import ApplicationHeader from 'components/molecules/ApplicationHeader';
 import ShowsSlider from 'components/organisms/ShowsSlider';
+import { PopularShow } from 'models/Show';
+import { betaSeriesServices } from 'services/betaSeriesClient';
 
 interface IHomeProps {
-  populars: IPopularShow[];
+  populars: PopularShow[];
 }
 
 export const getStaticProps: GetStaticProps<IHomeProps> = async () => {
-  const populars = await fetchPopularShows();
+  const populars = await betaSeriesServices.fetchPopularShows();
 
   return {
     props: {

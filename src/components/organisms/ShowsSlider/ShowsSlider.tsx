@@ -3,7 +3,7 @@ import Header, { HeaderContent, HeaderSubheader } from 'components/atoms/Header'
 import Link from 'components/atoms/Link';
 import Slick from 'components/molecules/Slick';
 import Image from 'components/atoms/Image';
-import { Show } from 'services/services';
+import Show from 'models/Show';
 
 type ShowsSliderProps = {
   title: string;

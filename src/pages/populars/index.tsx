@@ -1,13 +1,14 @@
 import React from 'react';
 import { useSWRInfinite } from 'swr';
-import { fetchPopularShows, IPopularShow } from 'services/services';
 import Header from 'components/atoms/Header';
 import { useRouter } from 'next/router';
 import Link from 'components/atoms/Link';
 import Icon from 'components/atoms/Icon';
 import ShowsInfiniteList from 'components/organisms/ShowsInfiniteList';
+import { PopularShow } from 'models/Show';
+import { betaSeriesServices } from 'services/betaSeriesClient';
 
-const getKey = (pageIndex: number, previousPageData: IPopularShow[] | null) => {
+const getKey = (pageIndex: number, previousPageData: PopularShow[] | null) => {
   if (!previousPageData) {
     return ['/shows/list', 10];
   }
@@ -20,9 +21,9 @@ const getKey = (pageIndex: number, previousPageData: IPopularShow[] | null) => {
 
 const Populars: React.FunctionComponent = () => {
   const router = useRouter();
-  const { data, error, size, setSize, isValidating } = useSWRInfinite<IPopularShow[]>(
+  const { data, error, size, setSize, isValidating } = useSWRInfinite<PopularShow[]>(
     getKey,
-    (url, limit, start) => fetchPopularShows(limit, start),
+    (url, limit, start) => betaSeriesServices.fetchPopularShows(limit, start),
     { revalidateOnFocus: false }
   );
 
