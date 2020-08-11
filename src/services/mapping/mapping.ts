@@ -1,5 +1,5 @@
-import { PopularShowServer, DetailShowServer, ResultShowServer } from 'services/betaSeries.model';
 import { PopularShow, DetailShow, ResultShow } from 'models/Show';
+import { PopularShowServer, DetailShowServer, ResultShowServer } from 'services/models/ShowServer';
 
 type MappingFunc<From, To> = (from: From) => To;
 
