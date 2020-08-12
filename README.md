@@ -14,6 +14,12 @@ Get the project:
 ```bash
 git clone https://github.com/YassirWu/betaseries-nextjs
 ```
+
+Copy all the informations from **.env.local.example** to a new file **.env.local** on the root of the application. You need to get a key from [BetaSeries API](https://www.betaseries.com/api/) and set the **.env.local** file
+```
+NEXT_PUBLIC_BETASERIES_KEY={KeyApi}
+```
+
 And run the development server with NPM:
 ```bash
 npm run dev
