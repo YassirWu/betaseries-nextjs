@@ -7,7 +7,7 @@ import Icon from 'components/atoms/Icon';
 import DetailShow from 'components/organisms/DetailShow';
 import { DetailShow as DetailShowType } from 'models/Show';
 import { betaSeriesServices } from 'services/betaSeriesClient';
-import { useRouterProject } from 'pages/router';
+import { useRouterProject } from 'utils/router';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const popularShows = await betaSeriesServices.fetchPopularShows(50);

@@ -1,5 +1,7 @@
 import { PopularShow, DetailShow, ResultShow } from 'models/Show';
 import { PopularShowServer, DetailShowServer, ResultShowServer } from 'services/models/ShowServer';
+import { PopularMovieServer, MovieServer } from 'services/models/MovieServer';
+import { PopularMovie, Movie } from 'models/Movie';
 
 type MappingFunc<From, To> = (from: From) => To;
 
@@ -42,4 +44,26 @@ export const mappingResultShowServerToResultShows: MappingFunc<ResultShowServer[
     genres: item.genres,
     platforms: item.platforms,
   }));
+};
+
+export const mappingPopularMoviesServerToPopularMovies: MappingFunc<
+  PopularMovieServer[],
+  PopularMovie[]
+> = (from) => {
+  return from.map((item) => ({
+    id: Number(item.id),
+    title: item.title,
+    tmdb_id: item.tmdb_id,
+    imdb_id: item.imdb_id,
+    production_year: item.production_year,
+  }));
+};
+
+export const mappingMovieServerToMovies: MappingFunc<MovieServer, Movie> = (from) => {
+  return {
+    id: Number(from.id),
+    title: from.title,
+    synopsis: from.synopsis,
+    poster: from.poster,
+  };
 };

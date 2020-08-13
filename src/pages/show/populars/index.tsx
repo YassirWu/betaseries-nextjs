@@ -6,7 +6,7 @@ import Icon from 'components/atoms/Icon';
 import ShowsInfiniteList from 'components/organisms/ShowsInfiniteList';
 import { PopularShow } from 'models/Show';
 import { betaSeriesServices } from 'services/betaSeriesClient';
-import { useRouterProject } from 'pages/router';
+import { useRouterProject } from 'utils/router';
 
 const getKey = (pageIndex: number, previousPageData: PopularShow[] | null) => {
   if (!previousPageData) {
