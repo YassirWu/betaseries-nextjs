@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSWRInfinite } from 'swr';
 import Header from 'components/atoms/Header';
-import { useRouter } from 'next/router';
 import Link from 'components/atoms/Link';
 import Icon from 'components/atoms/Icon';
 import ShowsInfiniteList from 'components/organisms/ShowsInfiniteList';
 import { PopularShow } from 'models/Show';
 import { betaSeriesServices } from 'services/betaSeriesClient';
+import { useRouterProject } from 'pages/router';
 
 const getKey = (pageIndex: number, previousPageData: PopularShow[] | null) => {
   if (!previousPageData) {
@@ -20,7 +20,7 @@ const getKey = (pageIndex: number, previousPageData: PopularShow[] | null) => {
 };
 
 const Populars: React.FunctionComponent = () => {
-  const router = useRouter();
+  const { homeRouting, detailShowRouting } = useRouterProject();
   const { data, error, size, setSize, isValidating } = useSWRInfinite<PopularShow[]>(
     getKey,
     (url, limit, start) => betaSeriesServices.fetchPopularShows(limit, start),
@@ -40,12 +40,18 @@ const Populars: React.FunctionComponent = () => {
 
   return (
     <>
-      <Link href="/" onClick={() => router.push('/')}>
+      <Link href={homeRouting.href()} onClick={homeRouting.redirection}>
         <Icon name="reply" />
         Back
       </Link>
       <Header as="h1">Popular shows</Header>
-      <ShowsInfiniteList shows={shows} onLoadMoreShows={onLoadMoreShows} isLoading={isValidating} />
+      <ShowsInfiniteList
+        shows={shows}
+        onLoadMoreShows={onLoadMoreShows}
+        isLoading={isValidating}
+        getHref={detailShowRouting.href}
+        onClickShow={detailShowRouting.redirection}
+      />
     </>
   );
 };
