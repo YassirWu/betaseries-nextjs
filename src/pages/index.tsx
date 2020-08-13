@@ -1,10 +1,10 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
 import ApplicationHeader from 'components/molecules/ApplicationHeader';
 import ShowsSlider from 'components/organisms/ShowsSlider';
 import { PopularShow } from 'models/Show';
 import { betaSeriesServices } from 'services/betaSeriesClient';
+import { useRouterProject } from './router';
 
 interface IHomeProps {
   populars: PopularShow[];
@@ -21,19 +21,19 @@ export const getStaticProps: GetStaticProps<IHomeProps> = async () => {
 };
 
 const Home: React.FunctionComponent<IHomeProps> = ({ populars }) => {
-  const router = useRouter();
+  const { popularShowsRouting, detailShowRouting } = useRouterProject();
 
   return (
     <>
-      <ApplicationHeader onResultSelect={(id) => router.push('/show/[id]', `/show/${id}`)} />
+      <ApplicationHeader onResultSelect={detailShowRouting.redirection} />
 
       <ShowsSlider
         title="Popular Shows"
         subtitle="See all popular shows"
-        link="/populars"
+        link={popularShowsRouting.href()}
         shows={populars}
-        onClickAllShows={() => router.push('/populars')}
-        onClickShow={(id) => router.push('/show/[id]', `/show/${id}`)}
+        onClickAllShows={popularShowsRouting.redirection}
+        onClickShow={detailShowRouting.redirection}
       />
     </>
   );

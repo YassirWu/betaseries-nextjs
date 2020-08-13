@@ -19,12 +19,16 @@ type ShowsInfiniteListProps = {
   shows: Show[];
   onLoadMoreShows: () => void;
   isLoading: boolean;
+  getHref: (id: number) => string;
+  onClickShow: (id: number) => void;
 };
 
 const ShowsInfiniteList: React.FunctionComponent<ShowsInfiniteListProps> = ({
   shows,
   onLoadMoreShows,
   isLoading,
+  getHref,
+  onClickShow,
 }) => {
   const classes = useStyle();
 
@@ -37,10 +41,11 @@ const ShowsInfiniteList: React.FunctionComponent<ShowsInfiniteListProps> = ({
               <Grid.Column key={show.id} className={classes.item}>
                 <ShowCardItem
                   key={show.id}
-                  id={show.id}
                   title={show.title}
                   description={show.description}
                   imageUrl={show.images.poster}
+                  hrefShow={getHref(show.id)}
+                  onClickShow={() => onClickShow(show.id)}
                 />
               </Grid.Column>
             ))}

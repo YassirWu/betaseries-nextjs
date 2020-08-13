@@ -7,6 +7,7 @@ import Icon from 'components/atoms/Icon';
 import DetailShow from 'components/organisms/DetailShow';
 import { DetailShow as DetailShowType } from 'models/Show';
 import { betaSeriesServices } from 'services/betaSeriesClient';
+import { useRouterProject } from 'pages/router';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const popularShows = await betaSeriesServices.fetchPopularShows(50);
@@ -50,6 +51,7 @@ type DetailShowProps = {
 
 const DetailShowPage: React.FunctionComponent<DetailShowProps> = ({ initialData }) => {
   const router = useRouter();
+  const { homeRouting } = useRouterProject();
   const { data: show, error } = useSWR(
     ['/shows/display', router.query.id],
     (url, id) => betaSeriesServices.fetchDetailShow(id),
@@ -61,7 +63,7 @@ const DetailShowPage: React.FunctionComponent<DetailShowProps> = ({ initialData 
 
   return (
     <>
-      <Link href="/" onClick={() => router.push('/')}>
+      <Link href={homeRouting.href()} onClick={homeRouting.redirection}>
         <Icon name="reply" />
         Back
       </Link>
