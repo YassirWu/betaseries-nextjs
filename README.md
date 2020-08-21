@@ -1,8 +1,8 @@
 # Simple NextJs/Semantic UI web application based on BetaSeries API.
 
 This is just a simple project that allowed me to discover and learn new tools. I use this stack:
-* ReactJs
-* NextJs
+* React
+* Next.js
 * SWR
 * Semantic UI
 * Typescript
